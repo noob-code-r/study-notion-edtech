@@ -32,7 +32,7 @@ exports.sendOTP = async (req,res)=>{
         });
         console.log("OTP generated ",otp);
         //check unique OTP or Not
-        const result = await OTP.findOne({otp:otp})
+        let result = await OTP.findOne({otp:otp})
         while(result){
             otp=otpGenerator.generate(6,{
             upperCaseAlphabets:false,
@@ -53,8 +53,8 @@ exports.sendOTP = async (req,res)=>{
         })
     } catch (error) {
         console.log("error in sendOTP",error)
-            return res.status.json({
-                success:true,
+            return res.status(500).json({
+                success:false,
                 message:error.message
             })
         }
@@ -75,7 +75,7 @@ exports.signUp = async (req,res)=>{
         //match 2 password
 
         if(password !== confirmPassword){
-            res.status(400).json({
+           return res.status(400).json({
                 success:false,
                 message:"Password and ConfirmPassword Value does not match, please try again"
             })
@@ -91,13 +91,13 @@ exports.signUp = async (req,res)=>{
 
 
         //find most recent OTP stored for the user
-        const recentOtp = await OTP.find({email}).sort({createdAt:-1}.limit(1))
+        const recentOtp = await OTP.find({email}).sort({createdAt:-1}).limit(1)
         console.log("Recent OTP",recentOtp)
 
         //validate OTP
         if (recentOtp.length == 0) {
             //OTP not found
-            return res.status.json({
+            return res.status(400).json({
                 success:false,
                 message:"OTP not Found"
             })
@@ -198,7 +198,7 @@ exports.login = async (req,res)=>{
 }
 
 //changePassword
-
+//TODO
 exports.changePassword = async (req,res)=>{
     //get data from req body
     //get oldPassword, newPassword, confirmNewPassword
