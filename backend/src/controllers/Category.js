@@ -51,7 +51,7 @@ exports.showAllCategory = async (req, res)=>{
         })
     }
 }
-
+//
 //category pageDetails
 exports.categoryPageDetails = async (req,res)=>{
     try {

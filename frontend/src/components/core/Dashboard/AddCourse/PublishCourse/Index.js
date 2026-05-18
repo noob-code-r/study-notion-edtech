@@ -24,10 +24,10 @@ const PublishCourse = () => {
                         id='public'
                         {...register("status")}
                           />  
-                </div>
+                </div> 
         </form>
     </div>
   )
-}
+} 
 
 export default PublishCourse
